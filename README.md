@@ -1,7 +1,7 @@
 # Awesome-Android-Interview
 A awesome  android expert interview questions and answers
 
-> 耗时6个多月，从十几份顶级面试仓库和200多篇高质量面经中总结出一份全面而详尽的Android面试题集。
+> 从十几份顶级面试仓库和200多篇高质量面经中总结出一份全面而详尽的Android面试题集。
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/android-interview-questions-and-answers.jpg">
@@ -11,23 +11,23 @@ A awesome  android expert interview questions and answers
 
 面试，一直都是很大家很关心的热门话题，Awesome-Android-Interview搜集了国内一线及二线互联网公司最常出现的面试题，非常全面，笔者花费了很大的精力和时间，希望得到大家的支持。Android面试中常涉及的问题有如下几方面：
 
-1、计算机基础：TCP/IP, HTTP/HTTPS, Socket、数据库、操作系统相关等等。
+1、计算机基础：TCP/IP, HTTP/HTTPS, Socket、操作系统、数据库相关。
 
-2、Java基础：反射、泛型、集合类库相关等等。
+2、Java基础：反射、泛型、集合类库相关。
 
-3、Java并发：线程/线程池，volatile，悲观锁/乐观锁等等。
+3、Java并发：线程/线程池，volatile，悲观锁/乐观锁。
 
-4、Jvm虚拟机：比如执行过程、JMM模型、java的Gc回收原理、类加载器等等。
+4、Jvm虚拟机：比如执行过程、JMM模型、java的Gc回收原理、类加载器。
 
 5、数据结构和算法：LeetCode + 剑指Offer。
 
-6、Android基础：启动模式、动画、自定义View等等。
+6、Android基础：启动模式、动画、自定义View。
 
-7、Android进阶：进程间通信、Binder、AIDL、AMS/WMS、事件分发、滑动冲突、View的绘制流程、性能优化、重要的Android源码和开源库分析等等。
+7、Android进阶：进程间通信、Binder、AIDL、AMS/WMS、事件分发、滑动冲突、View的绘制流程、性能优化、重要的Android源码和开源库分析。
 
-8、Android高新技术：模块化、插件化、组件化、热更新实现原理等等。
+8、Android高新技术：模块化、插件化、组件化、热更新实现原理。
 
-9、最后，如果你会其他的开发方式或语言也会加分不少。比如Kotlin、Python、ReactNative、前后端开发等等。
+9、最后，如果你会其他的开发方式或语言也会加分不少。比如Kotlin、ReactNative、Flutter、Python、前后端开发。
 
 ## Contents
 
@@ -63,16 +63,16 @@ A awesome  android expert interview questions and answers
 
 ### 其它
 
-* [其他扩展面试题(加分项)](https://github.com/JsonChao/Awesome-Android-Interview/blob/master/%E5%85%B6%E5%AE%83/%E5%85%B6%E5%AE%83%E6%89%A9%E5%B1%95%E9%9D%A2%E8%AF%95%E9%A2%98.md)
+* [其他扩展面试题](https://github.com/JsonChao/Awesome-Android-Interview/blob/master/%E5%85%B6%E5%AE%83/%E5%85%B6%E5%AE%83%E6%89%A9%E5%B1%95%E9%9D%A2%E8%AF%95%E9%A2%98.md)
 
 * [非技术面试题](https://github.com/JsonChao/Awesome-Android-Interview/blob/master/%E5%85%B6%E5%AE%83/%E9%9D%9E%E6%8A%80%E6%9C%AF%E9%9D%A2%E8%AF%95%E9%A2%98.md)
 
 
 ### About me
 
-- #### Email:[chao.qu521@gmail.com]()
-- #### Blog:[https://jsonchao.github.io/](https://jsonchao.github.io/)
-- #### 掘金:[https://juejin.im/user/5a3ba9375188252bca050ade](https://juejin.im/user/5a3ba9375188252bca050ade)
+- #### Email: [chao.qu521@gmail.com]()
+- #### Blog: [https://jsonchao.github.io/](https://jsonchao.github.io/)
+- #### 掘金: [https://juejin.im/user/5a3ba9375188252bca050ade](https://juejin.im/user/5a3ba9375188252bca050ade)
     
 ### License
 
