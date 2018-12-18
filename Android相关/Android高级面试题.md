@@ -7,12 +7,6 @@
 http://stackoverflow.com/questions/29363321/picasso-v-s-imageloader-v-s-fresco-vs-glide
 http://www.trinea.cn/android/android-image-cache-compare/
 
-图片库的源码分析
-
-图片框架缓存实现
-
-LRUCache原理
-
 图片加载原理
 
 自己去实现图片库，怎么做？
@@ -138,9 +132,6 @@ BitMap的缓存：
     1.同步加载只创建一个线程然后按照顺序进行图片加载
     2.异步加载使用线程池，让存在的加载任务都处于不同线程
     3.为了不开启过多的异步任务，只在列表静止的时候开启图片加载
-
-**图片加载库相关，bitmap如何处理大图，如一张30M的大图，如何预防OOM**
-
     
 **[如何优雅的展示Bitmap大图](http://blog.csdn.net/guolin_blog/article/details/9316683)**
 
@@ -221,7 +212,7 @@ App 是如何沙箱化，为什么要这么做？
 
 **三、数据库**
 
-数据库框架对比和源码分析
+数据库框架对比和源码分析(GreenDao)
 
 数据库的优化
 
@@ -234,6 +225,24 @@ App 是如何沙箱化，为什么要这么做？
 http://www.liuguangli.win/archives/366
 http://www.liuguangli.win/archives/387
 http://www.liuguangli.win/archives/452
+
+
+插件化：
+    动态加载主要解决3个技术问题：
+    1，使用ClassLoader加载类。
+    2，资源访问。
+    3，生命周期管理。
+    插件化是体现在功能拆分方面的，它将某个功能独立提取出来，独立开发，独立测试，再插入到主应用中。依次来较少主应用的规模。
+热修复：
+    原因：因为一个dvm中存储方法id用的是short类型，导致dex中方法不能超过65536个
+    原理：将编译好的class文件拆分打包成两个dex，绕过dex方法数量的限制以及安装时的检查，在运行时再动态加载第二个dex文件中。使用Dexclassloader。
+    热修复是体现在bug修复方面的，它实现的是不需要重新发版和重新安装，就可以去修复已知的bug。
+利用PathClassLoader和DexClassLoader去加载与bug类同名的类，替换掉bug类，进而达到修复bug的目的，原理是在app打包的时候阻止类打上CLASS_ISPREVERIFIED标志，然后在 热修复的时候动态改变BaseDexClassLoader对象间接引用的dexElements，替换掉旧的类。
+
+目前热修复框架主要分为两大类：
+
+Sophix：修改方法指针。
+Tinker：修改dex数组元素。
 
     相同点:
     
@@ -251,43 +260,16 @@ http://www.liuguangli.win/archives/452
     
     所以插件化比热修复简单，热修复是在插件化的基础上在进行替旧的Bug类
     
-**了解插件化和热修复吗，它们有什么区别，理解它们的原理吗？**
-
-插件化：插件化是体现在功能拆分方面的，它将某个功能独立提取出来，独立开发，独立测试，再插入到主应用中。依次来较少主应用的规模。
-热修复：热修复是体现在bug修复方面的，它实现的是不需要重新发版和重新安装，就可以去修复已知的bug。
-利用PathClassLoader和DexClassLoader去加载与bug类同名的类，替换掉bug类，进而达到修复bug的目的，原理是在app打包的时候阻止类打上CLASS_ISPREVERIFIED标志，然后在 热修复的时候动态改变BaseDexClassLoader对象间接引用的dexElements，替换掉旧的类。
-
-目前热修复框架主要分为两大类：
-
-Sophix：修改方法指针。
-Tinker：修改dex数组元素。
-
-**热补丁**
-
-    原因：因为一个dvm中存储方法id用的是short类型，导致dex中方法不能超过65536个
-    原理：将编译好的class文件拆分打包成两个dex，绕过dex方法数量的限制以及安装时的检查，在运行时再动态加载第二个dex文件中。使用Dexclassloader。
-
-**动态加载(也叫插件化技术)**
-
-    动态加载主要解决3个技术问题：
-    1，使用ClassLoader加载类。
-    2，资源访问。
-    3，生命周期管理。
-    
-**模块化的好处**
-
-https://www.jianshu.com/p/376ea8a19a17
-
-Android 组件化的原理，还有一些组件化平时使用的问题；
-
-
-对热修复和插件化的理解
 
 为什么选用插件化，插件化框架的比较，梳理插件化的架构
 
 插件化原理分析
 
-模块化实现（好处，原因）
+**模块化的好处**
+
+https://www.jianshu.com/p/376ea8a19a17
+
+Android 组件化的原理，还有一些组件化平时使用的问题；
 
 项目组件化的理解
 
@@ -309,17 +291,11 @@ http://www.tianmaying.com/tutorial/AndroidMVC
 
 MVC MVP MVVM原理和区别
 
-你所知道的设计模式有哪些？
-
 项目中常用的设计模式
 
 手写生产者/消费者模式
 
 适配器模式，装饰者模式，外观模式的异同？
-
-用到的一些开源框架，介绍一个看过源码的，内部实现过程。
-
-谈谈对RxJava的理解
 
 RxJava的功能与原理实现
 
@@ -334,8 +310,6 @@ RxJava的作用，与平时使用的异步操作来比的优缺点
 谈谈对java状态机理解
 
 Fragment如果在Adapter中使用应该如何解耦？
-
-Binder机制及底层实现
 
 对于应用更新这块是如何做的？(解答：灰度，强制更新，分区域更新)？
 
@@ -455,8 +429,103 @@ Binder机制及底层实现
     
     
     但是编写代码还是要按照面向对象思维的，我们应该在能优化的地方进行优化，比如避免在内部调用getters/setters方法。
+    
+**FC(Force Close)**
 
-如何对Android 应用进行性能分析以及优化?
+什么时候会出现
+
+Error
+OOM，内存溢出
+StackOverFlowError
+Runtime,比如说空指针异常
+解决的办法
+
+注意内存的使用和管理
+使用Thread.UncaughtExceptionHandler接口
+
+**界面优化** 
+
+    太多重叠的背景(overdraw)
+    
+    这个问题其实最容易解决，建议就是检查你在布局和代码中设置的背景，有些背景是隐藏在底下的，它永远不可能显示出来，这种没必要的背景一定要移除，因为它很可能会严重影响到app的性能。如果采用的是selector的背景，将normal状态的color设置为”@android:color/transparent”,也同样可以解决问题。
+    
+    太多重叠的View
+    
+    第一个建议是 ：使用ViewStub来加载一些不常用的布局，它是一个轻量级且默认是不可见的视图，可以动态的加载一个布局，只要你用到这个重叠着的View的时候才加载，推迟加载的时间。
+    
+    第二个建议是：如果使用了类似Viewpager＋Fragment这样的组合或者有多个Fragment在一个界面上，需要控制Fragment的显示和隐藏，尽量使用动态的Inflation view，它的性能要比SetVisibility好。
+    
+    复杂的Layout层级
+    
+    这里的建议比较多一些，首先推荐使用Android提供的布局工具Hierarchy Viewer来检查和优化布局。第一个建议是：如果嵌套的线性布局加深了布局层次，可以使用相对布局来取代。第二个建议是：用标签来合并布局。第三个建议是：用标签来重用布局，抽取通用的布局可以让布局的逻辑更清晰明了。记住，这些建议的最终目的都是使得你的Layout在Hierarchy Viewer里变得宽而浅，而不是窄而深。
+    
+    总结：可以考虑多使用merge和include，ViewStub。尽量使布局浅平，根布局尽量少使用RelactivityLayout,因为RelactivityLayout每次需要测量2次。
+
+**内存优化** 
+
+    核心思想：减少内存使用，能不new的不new，能少分配的少分配。因为分配更多的内存就意味着发生更多的GC，每次触发GC都会占用CPU时间，影响性能。
+    
+    集合优化：Android提供了一系列优化过后的数据集合工具类，如SparseArray、SparseBooleanArray、LongSparseArray，使用这些API可以让我们的程序更加高效。HashMap工具类会相对比较低效，因为它需要为每一个键值对都提供一个对象入口，而SparseArray就避免掉了基本数据类型转换成对象数据类型的时间。
+    Bitmap优化：读取一个Bitmap图片的时候，千万不要去加载不需要的分辨率。可以压缩图片等操作。
+    尽量避免使用依赖注入框架。
+    避免创作不必要的对象：字符串拼接使用StringBuffer，StringBuilder。
+    onDraw方法里面不要执行对象的创建.
+    重写onTrimMemory，根据传入的参数，进行内存释放。
+    使用static final 优化成员变量。
+    
+**移动端获取网络数据优化的几个点**
+
+    连接复用：节省连接建立时间，如开启 keep-alive。
+    对于Android来说默认情况下HttpURLConnection和HttpClient都开启了keep-alive。只是2.2之前HttpURLConnection存在影响连接池的Bug，具体可见：Android HttpURLConnection及HttpClient选择
+    
+    请求合并：即将多个请求合并为一个进行请求，比较常见的就是网页中的CSS Image Sprites。如果某个页面内请求过多，也可以考虑做一定的请求合并。
+    
+    减少请求数据的大小：对于post请求，body可以做gzip压缩的，header也可以做数据压缩(不过只支持http 2.0)。
+    返回数据的body也可以做gzip压缩，body数据体积可以缩小到原来的30%左右。（也可以考虑压缩返回的json数据的key数据的体积，尤其是针对返回数据格式变化不大的情况，支付宝聊天返回的数据用到了）
+    根据用户的当前的网络质量来判断下载什么质量的图片（电商用的比较多）
+    
+**Android性能优化方法**
+
+http://www.trinea.cn/android/performance/
+
+
+
+    布局优化：尽量减少布局文件的层级
+    尽量减少布局文件的层级
+    删除布局中无用的控件和层次，有选择的使用性能较高的 ViewGroup
+    采用标签，ViewStub，布局重用可降低布局的层级（ViewStub提供了按需加载的功能，当需要时才会将 ViewStub 中布局加载到内存，提高了初始化效率）
+    避免过度绘制
+    
+    绘制优化：View 的 onDraw() 方法避免执行大量操作。
+    onDraw() 中不要创建新的布局对象。
+    onDraw() 中不做耗时任务，大量循环十分抢占 cpu 时间片，造成 View 的绘制不流畅。
+    
+    内存泄漏优化
+    避免写出内存泄漏代码
+    通过分析工具（MAT、LeakCannary）找出潜在的内存泄漏方法，然后解决。
+    导致内存泄漏的原因:
+    集合类的泄漏
+    单例 / 静态变量造成内存泄漏
+    匿名内部类/非静态内部类造成内存泄漏
+    资源未关闭
+    
+    响应速度的优化：避免在主线程做耗时的操作
+    
+    ListView / RecyclerView优化：
+    使用 ViewHolder 模式来提高效率
+    异步加载：耗时操作放在异步线程
+    滑动时停止加载和分页加载
+    
+    线程优化：采用线程池，避免程序中存在大量 Thread 。
+    
+    其他性能优化：
+    不要过多的创建对象。
+    不要过多使用枚举类，枚举占用内存空间要比整型大。
+    常量使用 static final 修饰。
+    使用 Android 特有的数据结构。
+    适当采用软引用和弱引用。
+    采用内存缓存和磁盘缓存。
+    尽量采用静态内部类，可避免潜在由于内部类导致的内存泄漏。
 
 ddms 和 traceView
 
@@ -489,8 +558,6 @@ RecyclerView和ListView的性能对比
 ListView的优化
 
 RecycleView优化
-
-View渲染
 
 Bitmap如何处理大图，如一张30M的大图，如何预防OOM
 
@@ -680,14 +747,7 @@ Binder原理：
 
 请介绍一下NDK
 
-什么是NDK库?
-
-jni用过吗
-
 如何在jni中注册native函数，有几种注册方式
-
-
-Java如何调用c、c++语言？
 
 **Java调用C++**
 
@@ -751,6 +811,69 @@ C++调用Java
     
 **八、Android Framework相关**
 
+**启动一个程序，可以主界面点击图标进入，也可以从一个程序中跳转过去，二者有什么区别？** 
+
+    是因为启动程序（主界面也是一个app），发现了在这个程序中存在一个设置为
+    
+    <category android:name="android.intent.category.LAUNCHER" />
+    的activity,
+    所以这个launcher会把icon提出来，放在主界面上。当用户点击icon的时候，发出一个Intent：
+    
+    Intent intent = mActivity.getPackageManager().getLaunchIntentForPackage(packageName);
+    mActivity.startActivity(intent);   
+    跳过去可以跳到任意允许的页面，如一个程序可以下载，那么真正下载的页面可能不是首页（也有可能是首页），这时还是构造一个Intent，startActivity.
+    这个intent中的action可能有多种view,download都有可能。系统会根据第三方程序向系统注册的功能，为你的Intent选择可以打开的程序或者页面。所以唯一的一点
+    不同的是从icon的点击启动的intent的action是相对单一的，从程序中跳转或者启动可能样式更多一些。本质是相同的。
+
+**Android系统的架构**
+
+![image](https://upload-images.jianshu.io/upload_images/2893137-1047c70c15c1589b.png?imageMogr2/auto-orient)
+
+    android的系统架构和其操作系统一样，采用了分层的架构。从架构图看，android分为四个层，从高层到低层分别是应用程序层、应用程序框架层、系统运行库层和linux核心层。
+    　　1.应用程序 
+    　　Android会同一系列核心应用程序包一起发布，该应用程序包包括email客户端，SMS短消息程序，日历，地图，浏览器，联系人管理程序等。所有的应用程序都是使用JAVA语言编写的。
+    　　2.应用程序框架 
+    　　开发人员也可以完全访问核心应用程序所使用的API框架。该应用程序的架构设计简化了组件的重用;任何一个应用程序都可以发布它的功能块并且任何其它的应用程序都可以使用其所发布的功能块(不过得遵循框架的安全性限制)。同样，该应用程序重用机制也使用户可以方便的替换程序组件。
+    　　隐藏在每个应用后面的是一系列的服务和系统, 其中包括;
+    　　* 丰富而又可扩展的视图(Views)，可以用来构建应用程序， 它包括列表(lists)，网格(grids)，文本框(text boxes)，按钮(buttons)， 甚至可嵌入的web浏览器。
+    　　* 内容提供器(Content Providers)使得应用程序可以访问另一个应用程序的数据(如联系人数据库)， 或者共享它们自己的数据
+    　　* 资源管理器(Resource Manager)提供 非代码资源的访问，如本地字符串，图形，和布局文件( layout files )。
+    　　* 通知管理器 (Notification Manager) 使得应用程序可以在状态栏中显示自定义的提示信息。
+    　　* 活动管理器( Activity Manager) 用来管理应用程序生命周期并提供常用的导航回退功能。
+    　　有关更多的细节和怎样从头写一个应用程序，请参考 如何编写一个 Android 应用程序.
+    3.系统运行库 
+    　　1)程序库
+    　　Android 包含一些C/C++库，这些库能被Android系统中不同的组件使用。它们通过 Android 应用程序框架为开发者提供服务。以下是一些核心库：
+    　　系统 C 库 - 一个从 BSD 继承来的标准 C 系统函数库( libc )， 它是专门为基于 embedded linux 的设备定制的。
+    　　 媒体库 - 基于 PacketVideo OpenCORE;该库支持多种常用的音频、视频格式回放和录制，同时支持静态图像文件。编码格式包括MPEG4, H.264, MP3, AAC, AMR, JPG, PNG 。
+    　　 Surface Manager - 对显示子系统的管理，并且为多个应用程序提 供了2D和3D图层的无缝融合。
+    　　 LibWebCore - 一个最新的web浏览器引擎用，支持Android浏览器和一个可嵌入的web视图。
+    　　SGL- 底层的2D图形引擎
+    　　 3D libraries - 基于OpenGL ES 1.0 APIs实现;该库可以使用硬件 3D加速(如果可用)或者使用高度优化的3D软加速。
+    　　 FreeType -位图(bitmap)和矢量(vector)字体显示。
+    　　* SQLite - 一个对于所有应用程序可用，功能强劲的轻型关系型数据库引擎。
+    　　2)Android 运行库
+    　　Android 包括了一个核心库，该核心库提供了JAVA编程语言核心库的大多数功能。
+    　　每一个Android应用程序都在它自己的进程中运行，都拥有一个独立的Dalvik虚拟机实例。Dalvik被设计成一个设备可以同时高效地运行多个虚拟系统。 Dalvik虚拟机执行(.dex)的Dalvik可执行文件，该格式文件针对小内存使用做了优化。同时虚拟机是基于寄存器的，所有的类都经由JAVA编译器编译，然后通过SDK中 的 “dx” 工具转化成.dex格式由虚拟机执行。
+    　　Dalvik虚拟机依赖于linux内核的一些功能，比如线程机制和底层内存管理机制。
+    　　4.Linux 内核 
+    Android 的核心系统服务依赖于 Linux 2.6 内核，如安全性，内存管理，进程管理， 网络协议栈和驱动模型。 Linux 内核也同时作为硬件和软件栈之间的抽象层。
+    
+![image](https://raw.githubusercontent.com/BeesAndroid/BeesAndroid/master/art/android_system_structure.png)
+
+从上到下依次分为四层：
+
+Android应用框架层
+Java系统框架层
+C++系统框架层
+Linux内核层
+
+activty的加载过程 请详细介绍下
+
+安卓采用自动垃圾回收机制，请说下安卓内存管理的原理
+
+说下安卓虚拟机和java虚拟机的原理和不同点 
+
 **android重要术语解释**
 
 1.ActivityManagerServices，简称AMS，服务端对象，责系统中所有Activity的生命周期
@@ -793,8 +916,6 @@ C++调用Java
 
 **Android2个虚拟机的区别（一个5.0之前，一个5.0之后）**
 
-**ART和Dalvik区别**
-
 art上应用启动快，运行快，但是耗费更多存储空间，安装时间长，总的来说ART的功效就是”空间换时间”。
 
 ART: Ahead of Time
@@ -814,8 +935,6 @@ ART优点：
 ART缺点：
 更大的存储空间占用，可能会增加10%-20%
 更长的应用安装时间
-
-**对 Dalvik、ART 虚拟机有基本的了解**
 
 https://blog.csdn.net/jason0539/article/details/50440669
 
@@ -859,8 +978,6 @@ APK整体的的打包流程如下图所示：
     
 五 ：ActivityManagerService通过Binder进程间通信机制通知ActivityThread，现在一切准备就绪，它可以真正执行Activity的启动操作了。
 
-**App启动流程，从点击桌面开始**
-
 点击应用图标后会去启动应用的LauncherActivity，如果LancerActivity所在的进程没有创建，还会创建新进程，整体的流程就是一个Activity的启动流程。
 
 Activity的启动流程图（放大可查看）如下所示：
@@ -898,18 +1015,6 @@ http://www.sohu.com/a/130814934_675634
 **一个应用程序安装到手机上时发生了什么**
 
 http://www.androidchina.net/6667.html
-
-**Android系统启动过程，App启动过程** 
-    
-从桌面点击到activity启动的过程
-
-1.Launcher线程捕获onclick的点击事件，调用LauncherstartActivitySafely,进一步调用Launcher.startActivty，最后调用父类Activity的startActivity。
-
-2.Activity和ActivityManagerService交互，引入Instrmentation，将启动请求交给Instrumentation，调用Insrumentation.execStartActivity。
-
-3.调用ActivityManagerService的startActivity方法这里做了进程切换（具体过程请查看源码）。
-
-4.开启Activity，调用onCreate方法
     
 **JVM 和Dalvik虚拟机的区别**
 
@@ -927,6 +1032,8 @@ DVM:.java -> javac -> .class -> dx.bat -> .dex
 
     
 **安卓view绘制机制和加载过程，请详细说下整个流程**
+
+[全面的了解请点击此处](https://jsonchao.github.io/2018/10/28/Android%20View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/)
 
 1.ViewRootImpl会调用performTraversals(),其内部会用performMeasure()、performLayout、performDraw()。
 
@@ -985,9 +1092,15 @@ APK的安装流程如下所示：
 将AndroidManifest文件解析出的四大组件信息注册到PackageManagerService中。
 安装完成后，发送广播。
 
-**Android 上的 Inter-Process-Communication 跨进程通信时如何工作的；**
+**进程间通信方式？Binder的构成有几部分？**
 
-**权限管理系统（底层的权限是如何进行 grant 的）**
+**jni的算法提供都是主线程的？**
+
+**Android的签名机制，APK包含哪些东西**
+
+**如何加载NDK库？如何在jni中注册native函数，有几种注册方法？**
+
+**点击Launcher跟点击微信支付启动微信有什么区别**
 
 **adb install 和 pms scan 的区别有哪些？**
 
@@ -1007,11 +1120,7 @@ APK的安装流程如下所示：
 
 **android api层的源码熟悉哪些？解释一下**
 
-**对Dalvik、ART虚拟机有什么了解？**
-
 **虚拟机原理，如何自己设计一个虚拟机(内存管理，类加载，双亲委派)**
-
-**Ubuntu编译安卓系统**
 
 **系统启动流程是什么？（提示：Zygote进程 –> SystemServer进程 –> 各种系统服务 –> 应用进程）**    
     
@@ -1055,9 +1164,7 @@ DOWN事件被传递给C的onTouchEvent方法，该方法返回tre，表示处理
 
 (记住这个图的传递顺序,面试的时候能够画出来,就很详细了)
 
-请写出四种以上你知道的设计模式（例如Android中哪里使用了观察者模式，单例模式相关），并介绍下实现原理
-          
-安卓子线程是否能更新UI，如果能请说明具体细节。
+请写出四种以上你知道的设计模式（例如Android中哪里使用了观察者模式，单例模式相关），并介绍下实现原理   
 
 **广播发送和接收的原理了解吗？**
 
@@ -1067,54 +1174,13 @@ DOWN事件被传递给C的onTouchEvent方法，该方法返回tre，表示处理
 - ActivityManagerService查找符合相应条件的广播（IntentFilter/Permission）的BroadcastReceiver，将广播发送到BroadcastReceiver所在的消息队列中。
 - BroadcastReceiver所在消息队列拿到此广播后，回调它的onReceive()方法。
 
-**View的绘制流程**
-
-View的绘制流程：OnMeasure()——>OnLayout()——>OnDraw
-
-各步骤的主要工作：
-
-OnMeasure()：
-
-测量视图大小。从顶层父View到子View递归调用measur方法，measure方法又回调OnMeasure。
-
-OnLayout()：
-
-确定View位置，进行页面布局。从顶层父View向子View递归调用view.layout方法的过程，即父View根据上一步easure子View所得到的布局大小和布局参数，将子View在合适的位置上。
-
-OnDraw()：
-
-绘制视图:ViewRoot创建一个Canvas对象，然后调用OnDrw()。六个步骤：
-
-①、绘制视图的背景；
-
-②、保存画布的图层（Layer）；
-
-③、绘制View的内容；
-
-④、绘制View子视图，如果没有就不用；
-
-⑤、还原图层（Layer）；
-
-⑥、绘制滚动条。
-
 View刷新机制
 
 HttpUrlConnection 和 okhttp关系
 
 Bitmap对象的理解
 
-ActivityThread，AMS，WMS的工作原理
-
 AstncTask+HttpClient 与 AsyncHttpClient有什么区别？
-
-View绘制流程
-
-http://www.codekk.com/blogs/detail/54cfab086c4761e5001b253f
-https://www.jianshu.com/p/5a71014e7b1b
-
-自定义控件原理
-
-自定义View如何提供获取View属性的接口？
 
 Android代码中实现WAP方式联网
 
@@ -1128,7 +1194,7 @@ LeakCanary 实现原理
 
 http://blog.csdn.net/cloud_huan/article/details/53081120
 
-内存泄露的本质
+**内存泄露的本质**
 
 无法回收无用的对象
 
@@ -1168,10 +1234,7 @@ Activity-Window-View三者的差别
 
 低版本SDK如何实现高版本api？
 
-
 计算一个view的嵌套层级
-
-图片加载原理
 
 统计启动时长,标准
 
@@ -1187,15 +1250,11 @@ SP是进程同步的吗?有什么方法做到同步
 
 进程和 Application 的生命周期；
 
-recycleview listview 的区别,性能
-
 数据库数据迁移问题
 
 项目组件化的理解
 
 Android系统为什么会设计ContentProvider，进程共享和线程安全问题
-
-Android相关优化（如内存优化、网络优化、布局优化、电量优化、业务优化）
 
 EventBus作用，实现方式，EventBus实现原理,代替EventBus的方式
 
@@ -1203,14 +1262,9 @@ EventBus作用，实现方式，EventBus实现原理,代替EventBus的方式
 
 下拉状态栏是不是影响activity的生命周期，如果在onStop的时候做了网络请求，onResume的时候怎么恢复
 
-view渲染
-
 逻辑地址与物理地址，为什么使用逻辑地址
 
-RecycleView的使用，原理，RecycleView优化
-
 App中唤醒其他进程的实现方式
-
 
 **软键盘顶起布局**
 
@@ -1222,8 +1276,6 @@ App中唤醒其他进程的实现方式
 
 **View在屏幕中的移动底层是如何实现的**
 
-**setContentView都干了啥**
-
 **Bitmap在decode的时候申请的内存如何复用，释放时机**
 
 **注解如何实现一个findViewById**
@@ -1233,8 +1285,6 @@ App中唤醒其他进程的实现方式
 **由A启动BActivity，A为栈内复用模式，B为标准模式，然后再次启动A或者杀死B，说说A，B的生命周期变化，为什么**
 
 **区别Animation和Animator的用法，概述其原理**
-
-**如何加载NDK库？如何在jni中注册native函数，有几种注册方法？**
 
 **操作系统中进程和线程有什么联系和区别？系统会在什么情况下会在用户态好内核态中切换。**
 
@@ -1250,10 +1300,6 @@ App中唤醒其他进程的实现方式
 
 **如何实现一个推送，极光推送原理**
 
-**图片框架选型**
-
-**图片加载原理**
-
 **统计启动时长**
 
 **如何保持应用的稳定性**
@@ -1264,13 +1310,9 @@ App中唤醒其他进程的实现方式
 
 **各个网络框架之间的差异和优缺点，网络框架代替进化的原因**
 
-**图片缓存框架的差异和优缺点，有没有比Glide更好的图片加载框架？**
-
 **项目框架里有没有Base类，BaseActivity和BaseFragment这种封装导致的问题，以及解决方法**
 
 **为什么不推荐软引用，软引用在dvm上的垃圾回收机制和jvm上一样吗？**
-
-**L6UCache的删除条件，LRU是什么意思**
 
 **启动页缓存设计 白屏问题**
 
@@ -1278,9 +1320,7 @@ App中唤醒其他进程的实现方式
 
 **项目框架中对多View的支持**
 
-**Arouter的原理**
-
-**组件化原理，组件化中路由的实现**
+**组件化原理，组件化中路由（ARouter）的实现**
 
 **应用跟系统之间通信什么时候用Socket什么时候用Binder**
 
@@ -1292,10 +1332,6 @@ App中唤醒其他进程的实现方式
 
 **设计一个多线程，可以同时读，读的时候不能写，写的时候不能读(读写锁)**
 
-**Android的签名机制，APK包含哪些东西**
-
-**点击Launcher跟点击微信支付启动微信有什么区别**
-
 **没有给权限如何定位，特定机型定位失败，如何解决**
 
 **Gradle生命周期**
@@ -1306,13 +1342,11 @@ App中唤醒其他进程的实现方式
 
 **热修复相关的原理，框架熟悉么**
 
-**gradle打包流程熟悉么**
-
 **任意提问环节：其实可以问之前面试中遇到的问题：比如，多模块开发的时候不同的负责人可能会引入重复资源，相同的字符串，相同的icon等但是文件名并不一样，怎样去重？**
 
 **Canvas的底层机制，绘制框架，硬件加速是什么原理，canvas lock的缓冲区是怎么回事**
 
-**surfaceview， suface，surfacetexure等相关的，以及底层原理**
+**surfaceview， suface，surfacetexture等相关的，以及底层原理**
 
 **android文件存储，各版本存储位置的权限控制的演进，外部存储，内部存储**
 
@@ -1330,13 +1364,9 @@ App中唤醒其他进程的实现方式
 
 **对应用里的线程有做统一管理么？**
 
-**jni的算法提供都是主线程的？是不是想问服务类的啊**
-
-**边沿检测用的啥？深度学习相关的有了解么？**
+**gradle打包流程熟悉么**
 
 **上线后的app性能分析检测有做么**
-
-**进程间通信方式？Binder的构成有几部分？**
 
 **想改变listview的高度，怎么做**
 
@@ -1450,49 +1480,6 @@ service +broadcast 方式，就是当service走ondestory的时候，发送一个
 **有什么工具可以看到Activity栈信息么？多个栈话，有方法分别得到各个栈的Activity列表么**
 
 **都熟悉哪些命令？知道怎么用命令启动一个Activity么?**
-    
-**Android性能优化方法**
-
-http://www.trinea.cn/android/performance/
-
-
-
-    布局优化：尽量减少布局文件的层级
-    尽量减少布局文件的层级
-    删除布局中无用的控件和层次，有选择的使用性能较高的 ViewGroup
-    采用标签，ViewStub，布局重用可降低布局的层级（ViewStub提供了按需加载的功能，当需要时才会将 ViewStub 中布局加载到内存，提高了初始化效率）
-    避免过度绘制
-    
-    绘制优化：View 的 onDraw() 方法避免执行大量操作。
-    onDraw() 中不要创建新的布局对象。
-    onDraw() 中不做耗时任务，大量循环十分抢占 cpu 时间片，造成 View 的绘制不流畅。
-    
-    内存泄漏优化
-    避免写出内存泄漏代码
-    通过分析工具（MAT、LeakCannary）找出潜在的内存泄漏方法，然后解决。
-    导致内存泄漏的原因:
-    集合类的泄漏
-    单例 / 静态变量造成内存泄漏
-    匿名内部类/非静态内部类造成内存泄漏
-    资源未关闭
-    
-    响应速度的优化：避免在主线程做耗时的操作
-    
-    ListView / RecyclerView优化：
-    使用 ViewHolder 模式来提高效率
-    异步加载：耗时操作放在异步线程
-    滑动时停止加载和分页加载
-    
-    线程优化：采用线程池，避免程序中存在大量 Thread 。
-    
-    其他性能优化：
-    不要过多的创建对象。
-    不要过多使用枚举类，枚举占用内存空间要比整型大。
-    常量使用 static final 修饰。
-    使用 Android 特有的数据结构。
-    适当采用软引用和弱引用。
-    采用内存缓存和磁盘缓存。
-    尽量采用静态内部类，可避免潜在由于内部类导致的内存泄漏。
 
 **Android中软引用与弱引用的应用场景。**
 
@@ -1519,127 +1506,6 @@ Java 引用类型分类：
 
 **动态权限适配方案，权限组的概念**
 
-
-**启动一个程序，可以主界面点击图标进入，也可以从一个程序中跳转过去，二者有什么区别？** 
-
-    是因为启动程序（主界面也是一个app），发现了在这个程序中存在一个设置为
-    
-    <category android:name="android.intent.category.LAUNCHER" />
-    的activity,
-    所以这个launcher会把icon提出来，放在主界面上。当用户点击icon的时候，发出一个Intent：
-    
-    Intent intent = mActivity.getPackageManager().getLaunchIntentForPackage(packageName);
-    mActivity.startActivity(intent);   
-    跳过去可以跳到任意允许的页面，如一个程序可以下载，那么真正下载的页面可能不是首页（也有可能是首页），这时还是构造一个Intent，startActivity.
-    这个intent中的action可能有多种view,download都有可能。系统会根据第三方程序向系统注册的功能，为你的Intent选择可以打开的程序或者页面。所以唯一的一点
-    不同的是从icon的点击启动的intent的action是相对单一的，从程序中跳转或者启动可能样式更多一些。本质是相同的。
-
-
-**FC(Force Close)**
-
-什么时候会出现
-
-Error
-OOM，内存溢出
-StackOverFlowError
-Runtime,比如说空指针异常
-解决的办法
-
-注意内存的使用和管理
-使用Thread.UncaughtExceptionHandler接口
-
-**界面优化** 
-
-    太多重叠的背景(overdraw)
-    
-    这个问题其实最容易解决，建议就是检查你在布局和代码中设置的背景，有些背景是隐藏在底下的，它永远不可能显示出来，这种没必要的背景一定要移除，因为它很可能会严重影响到app的性能。如果采用的是selector的背景，将normal状态的color设置为”@android:color/transparent”,也同样可以解决问题。
-    
-    太多重叠的View
-    
-    第一个建议是 ：使用ViewStub来加载一些不常用的布局，它是一个轻量级且默认是不可见的视图，可以动态的加载一个布局，只要你用到这个重叠着的View的时候才加载，推迟加载的时间。
-    
-    第二个建议是：如果使用了类似Viewpager＋Fragment这样的组合或者有多个Fragment在一个界面上，需要控制Fragment的显示和隐藏，尽量使用动态的Inflation view，它的性能要比SetVisibility好。
-    
-    复杂的Layout层级
-    
-    这里的建议比较多一些，首先推荐使用Android提供的布局工具Hierarchy Viewer来检查和优化布局。第一个建议是：如果嵌套的线性布局加深了布局层次，可以使用相对布局来取代。第二个建议是：用标签来合并布局。第三个建议是：用标签来重用布局，抽取通用的布局可以让布局的逻辑更清晰明了。记住，这些建议的最终目的都是使得你的Layout在Hierarchy Viewer里变得宽而浅，而不是窄而深。
-    
-    总结：可以考虑多使用merge和include，ViewStub。尽量使布局浅平，根布局尽量少使用RelactivityLayout,因为RelactivityLayout每次需要测量2次。
-
-**内存优化** 
-
-    核心思想：减少内存使用，能不new的不new，能少分配的少分配。因为分配更多的内存就意味着发生更多的GC，每次触发GC都会占用CPU时间，影响性能。
-    
-    集合优化：Android提供了一系列优化过后的数据集合工具类，如SparseArray、SparseBooleanArray、LongSparseArray，使用这些API可以让我们的程序更加高效。HashMap工具类会相对比较低效，因为它需要为每一个键值对都提供一个对象入口，而SparseArray就避免掉了基本数据类型转换成对象数据类型的时间。
-    Bitmap优化：读取一个Bitmap图片的时候，千万不要去加载不需要的分辨率。可以压缩图片等操作。
-    尽量避免使用依赖注入框架。
-    避免创作不必要的对象：字符串拼接使用StringBuffer，StringBuilder。
-    onDraw方法里面不要执行对象的创建.
-    重写onTrimMemory，根据传入的参数，进行内存释放。
-    使用static final 优化成员变量。
-    
-**移动端获取网络数据优化的几个点**
-
-    连接复用：节省连接建立时间，如开启 keep-alive。
-    对于Android来说默认情况下HttpURLConnection和HttpClient都开启了keep-alive。只是2.2之前HttpURLConnection存在影响连接池的Bug，具体可见：Android HttpURLConnection及HttpClient选择
-    
-    请求合并：即将多个请求合并为一个进行请求，比较常见的就是网页中的CSS Image Sprites。如果某个页面内请求过多，也可以考虑做一定的请求合并。
-    
-    减少请求数据的大小：对于post请求，body可以做gzip压缩的，header也可以做数据压缩(不过只支持http 2.0)。
-    返回数据的body也可以做gzip压缩，body数据体积可以缩小到原来的30%左右。（也可以考虑压缩返回的json数据的key数据的体积，尤其是针对返回数据格式变化不大的情况，支付宝聊天返回的数据用到了）
-    根据用户的当前的网络质量来判断下载什么质量的图片（电商用的比较多）
-
-**Android系统的架构**
-
-![image](https://upload-images.jianshu.io/upload_images/2893137-1047c70c15c1589b.png?imageMogr2/auto-orient)
-
-    android的系统架构和其操作系统一样，采用了分层的架构。从架构图看，android分为四个层，从高层到低层分别是应用程序层、应用程序框架层、系统运行库层和linux核心层。
-    　　1.应用程序 
-    　　Android会同一系列核心应用程序包一起发布，该应用程序包包括email客户端，SMS短消息程序，日历，地图，浏览器，联系人管理程序等。所有的应用程序都是使用JAVA语言编写的。
-    　　2.应用程序框架 
-    　　开发人员也可以完全访问核心应用程序所使用的API框架。该应用程序的架构设计简化了组件的重用;任何一个应用程序都可以发布它的功能块并且任何其它的应用程序都可以使用其所发布的功能块(不过得遵循框架的安全性限制)。同样，该应用程序重用机制也使用户可以方便的替换程序组件。
-    　　隐藏在每个应用后面的是一系列的服务和系统, 其中包括;
-    　　* 丰富而又可扩展的视图(Views)，可以用来构建应用程序， 它包括列表(lists)，网格(grids)，文本框(text boxes)，按钮(buttons)， 甚至可嵌入的web浏览器。
-    　　* 内容提供器(Content Providers)使得应用程序可以访问另一个应用程序的数据(如联系人数据库)， 或者共享它们自己的数据
-    　　* 资源管理器(Resource Manager)提供 非代码资源的访问，如本地字符串，图形，和布局文件( layout files )。
-    　　* 通知管理器 (Notification Manager) 使得应用程序可以在状态栏中显示自定义的提示信息。
-    　　* 活动管理器( Activity Manager) 用来管理应用程序生命周期并提供常用的导航回退功能。
-    　　有关更多的细节和怎样从头写一个应用程序，请参考 如何编写一个 Android 应用程序.
-    3.系统运行库 
-    　　1)程序库
-    　　Android 包含一些C/C++库，这些库能被Android系统中不同的组件使用。它们通过 Android 应用程序框架为开发者提供服务。以下是一些核心库：
-    　　系统 C 库 - 一个从 BSD 继承来的标准 C 系统函数库( libc )， 它是专门为基于 embedded linux 的设备定制的。
-    　　 媒体库 - 基于 PacketVideo OpenCORE;该库支持多种常用的音频、视频格式回放和录制，同时支持静态图像文件。编码格式包括MPEG4, H.264, MP3, AAC, AMR, JPG, PNG 。
-    　　 Surface Manager - 对显示子系统的管理，并且为多个应用程序提 供了2D和3D图层的无缝融合。
-    　　 LibWebCore - 一个最新的web浏览器引擎用，支持Android浏览器和一个可嵌入的web视图。
-    　　SGL- 底层的2D图形引擎
-    　　 3D libraries - 基于OpenGL ES 1.0 APIs实现;该库可以使用硬件 3D加速(如果可用)或者使用高度优化的3D软加速。
-    　　 FreeType -位图(bitmap)和矢量(vector)字体显示。
-    　　* SQLite - 一个对于所有应用程序可用，功能强劲的轻型关系型数据库引擎。
-    　　2)Android 运行库
-    　　Android 包括了一个核心库，该核心库提供了JAVA编程语言核心库的大多数功能。
-    　　每一个Android应用程序都在它自己的进程中运行，都拥有一个独立的Dalvik虚拟机实例。Dalvik被设计成一个设备可以同时高效地运行多个虚拟系统。 Dalvik虚拟机执行(.dex)的Dalvik可执行文件，该格式文件针对小内存使用做了优化。同时虚拟机是基于寄存器的，所有的类都经由JAVA编译器编译，然后通过SDK中 的 “dx” 工具转化成.dex格式由虚拟机执行。
-    　　Dalvik虚拟机依赖于linux内核的一些功能，比如线程机制和底层内存管理机制。
-    　　4.Linux 内核 
-    Android 的核心系统服务依赖于 Linux 2.6 内核，如安全性，内存管理，进程管理， 网络协议栈和驱动模型。 Linux 内核也同时作为硬件和软件栈之间的抽象层。
-    
-![image](https://raw.githubusercontent.com/BeesAndroid/BeesAndroid/master/art/android_system_structure.png)
-
-从上到下依次分为四层：
-
-Android应用框架层
-Java系统框架层
-C++系统框架层
-Linux内核层
-
-安卓view绘制机制和加载过程，请详细说下整个流程
-
-activty的加载过程 请详细介绍下（不是生命周期切记）
-
-安卓采用自动垃圾回收机制，请说下安卓内存管理的原理
-
-说下安卓虚拟机和java虚拟机的原理和不同点 
-
 **[RxJava中map和flatmap操作符的区别及底层实现](https://www.jianshu.com/p/af13a8278a05)**
 
 **[RecyclerView与ListView缓存机制的不同](https://segmentfault.com/a/1190000007331249)**
@@ -1664,59 +1530,6 @@ ButterKnife对性能的影响很小，因为没有使用使用反射，而是使
     调用到ViewGroup
     调用ViewGroup的removeAllView()，先将所有的view移除掉
     添加新的view：addView()
-
-**事件传递机制**
-
-    当手指触摸到屏幕时，系统就会调用相应View的onTouchEvent，并传入一系列的action。
-    
-    dispatchTouchEvent的执行顺序为：
-    
-    首先触发ACTIVITY的dispatchTouchEvent,然后触发ACTIVITY的onInterceptTouchEvent.
-    然后触发LAYOUT的dispatchTouchEvent，然后触发LAYOUT的onInterceptTouchEvent
-    这就解释了重写ViewGroup时必须调用super.dispatchTouchEvent();
-    
-    (1)dispatchTouchEvent:
-    
-    此方法一般用于初步处理事件，因为动作是由此分发，所以通常会调用super.dispatchTouchEvent。这样就会继续调用onInterceptTouchEvent，再由onInterceptTouchEvent决定事件流向。
-    
-    (2)onInterceptTouchEvent:
-    
-    若返回值为true事件会传递到自己的onTouchEvent();若返回值为false传递到下一个View的dispatchTouchEvent();
-    
-    (3)onTouchEvent():
-    
-    若返回值为true，事件由自己消耗，后续动作让其处理；若返回值为false，自己不消耗事件了，向上返回让其他的父View的onTouchEvent接受处理
-    
-    三大方法关系的伪代码：如果当前View拦截事件，就交给自己的onTouchEvent去处理，否则就丢给子View继续走相同的流程。
-    
-    public boolean dispatchTouchEvent(MotionEvent ev)
-    {
-        boolean consume = false;
-        if(onInterceptTouchEvent(ev))
-        {
-            consume = onTouchEvent(ev);
-        }
-        else
-        {
-            consume = child.dispatchTouchEvent(ev);
-        }
-        return consume;
-    }
-    onTouchEvent的传递：
-    
-    当有多个层级的View时，在父层级允许的情况下，这个action会一直传递直到遇到最深层的View。所以touch事件最先调用的是最底层View的onTouchEvent，如果View的onTouchEvent接收到某个touch action并做了相应处理，最后有两种返回方式return true和return false；return true会告诉系统当前的View需要处理这次的touch事件，以后的系统发出的ACTION_MOVE,ACTION_UP还是需要继续监听并接收的，并且这次的action已经被处理掉了，父层的View是不可能触发onTouchEvent的了。所以每一个action最多只能有一个onTouchEvent接口返回true。如果返回false，便会通知系统，当前View不关心这一次的touch事件，此时这个action会传向父级，调用父级View的onTouchEvent。但是这一次的touch事件之后发出任何action，该View都不在接受，onTouchEvent在这一次的touch事件中再也不会触发，也就是说一旦View返回false，那么之后的ACTION_MOVE,ACTION_UP等ACTION就不会在传入这个View,但是下一次touch事件的action还是会传进来的。
-    
-    父层的onInterceptTouchEvent
-    
-    前面说了底层的View能够接收到这次的事件有一个前提条件：在父层允许的情况下。假设不改变父层级的dispatch方法，在系统调用底层onTouchEvent之前会调用父View的onInterceptTouchEvent方法判断，父层View是否要截获本次touch事件之后的action。如果onInterceptTouchEvent返回了true，那么本次touch事件之后的所有action都不会向深层的View传递，统统都会传给父层View的onTouchEvent，就是说父层已经截获了这次touch事件，之后的action也不必询问onInterceptTouchEvent，在这次的touch事件之后发出的action时onInterceptTouchEvent不会再被调用，直到下一次touch事件的来临。如果onInterceptTouchEvent返回false，那么本次action将发送给更深层的View，并且之后的每一次action都会询问父层的onInterceptTouchEvent需不需要截获本次touch事件。只有ViewGroup才有onInterceptTouchEvent方法，因为一个普通的View肯定是位于最深层的View，touch能够传到这里已经是最后一站了，肯定会调用View的onTouchEvent()。
-    
-    底层View的getParent().requestDisallowInterceptTouchEvent(true)
-    
-    对于底层的View来说，有一种方法可以阻止父层的View获取touch事件，就是调用getParent().requestDisallowInterceptTouchEvent(true)方法。一旦底层View收到touch的action后调用这个方法那么父层View就不会再调用onInterceptTouchEvent了，也无法截获以后的action（如果父层ViewGroup和最底层View需要截获不同焦点，或不同手势的touch，不能使用这个写死）。
-    
-http://gityuan.com/2015/09/19/android-touch/
-https://www.jianshu.com/p/84b2e0038080
-http://hanhailong.com/2015/09/24/Android-%E4%B8%89%E5%BC%A0%E5%9B%BE%E6%90%9E%E5%AE%9ATouch%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/
 
 **Scroller原理**
 
@@ -1861,8 +1674,6 @@ React框架代码执行慢，可以将这部分代码拆分出来，提前进行
 
 宽高为20dp的view，不同手机，用尺子量尺寸一样不一样；不一样的话差别是 %20， %30 还是2，3倍。
 
-APK 包含了哪些东西，打包过程是什么；
-
 Android 界面刷新原理
 
 **非UI线程可以更新UI吗?**
@@ -1897,11 +1708,7 @@ Android Studio 3.0 中 Gradle 的 api 和 implementation 有什么区别；
 
 设计一个音乐播放界面，你会如何实现，用到那些类，如何设计，如何定义接口，如何与后台交互，如何缓存与下载，如何优化(15分钟时间)
 
-
-app的架构是怎么样的，并且为什么这样，有什么优缺点？
-
-Android Native 和 JS
-通信有几种方式，有没有用到什么框架之类的；
+Android Native 和 JS通信有几种方式，有没有用到什么框架之类的；
 
 单元测试有没有做过，说说熟悉的单元测试框架；
 
@@ -1927,22 +1734,11 @@ Java动态代理的使用，InvocationHandler 有什么用；
 
 安卓安全方面了解过吗，反编译、加壳之类的；
 
-
 点击事件被拦截，但是想传到下面的View，如何操作？
 
 微信主页面的实现方式
 
 微信上消息小红点的原理
-
-实现stack 的pop和push接口 要求：
-
-1.用基本的数组实现
-
-2.考虑范型
-
-3.考虑下同步问题
-
-4.考虑扩容问题
 
 介绍下先前的app架构和通信
 
@@ -1950,19 +1746,13 @@ Java动态代理的使用，InvocationHandler 有什么用；
 
 apk包大小有限制么？怎么减少包大小？
 
-工作中有没有用过或者写过什么工具？脚本，插件等等
-
-比如：多人协同开发可能对一些相同资源都各自放了一份，有没有方法自动检测这种重复之类的
+工作中有没有用过或者写过什么工具？脚本，插件等等；比如：多人协同开发可能对一些相同资源都各自放了一份，有没有方法自动检测这种重复之类的
 
 自定义View如何考虑机型适配；
 
 自定义View如何提供获取View属性的接口；
 
-View和ViewGroup分别有哪些事件分发相关的回调方法；
-
 注解的作用与原理
-
-
 
 说下冷启动与热启动是什么，区别，如何优化，使用场景等。
 

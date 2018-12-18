@@ -13,17 +13,17 @@ A awesome  android expert interview questions and answers
 
 1、计算机基础：TCP/IP, HTTP/HTTPS, Socket、操作系统、数据库相关。
 
-2、Java基础：反射、泛型、集合类库相关。
+2、Java基础：面向对象、反射、泛型、集合类库相关。
 
-3、Java并发：线程/线程池，volatile，悲观锁/乐观锁。
+3、Java并发：线程/线程池，volatile，悲观锁/乐观锁等等。
 
-4、Jvm虚拟机：比如执行过程、JMM模型、java的Gc回收原理、类加载器。
+4、Jvm虚拟机：比如执行过程、JMM模型、Java的GC回收原理、类加载器。
 
 5、数据结构和算法：LeetCode + 剑指Offer。
 
 6、Android基础：启动模式、动画、自定义View。
 
-7、Android进阶：进程间通信、Binder、AIDL、AMS/WMS、事件分发、滑动冲突、View的绘制流程、性能优化、重要的Android源码和开源库分析。
+7、Android进阶：Binder、AIDL、进程间通信、AMS/WMS/PMS、事件分发、滑动冲突、View的绘制流程、性能优化、重要的Android源码和开源库分析。
 
 8、Android高新技术：模块化、插件化、组件化、热更新实现原理。
 
